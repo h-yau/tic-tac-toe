@@ -1,26 +1,32 @@
-const Gameboard = (() => {
-    const board = (() => {
-        const rows = []; 
-        for (let i = 0; i < 3; i ++) {
-            const row = [];
-            for (let j = 0; j < 3; j++) {
-                row.push(" ");
-            }
-            rows.push(row);
+const gameBoard = (() => {
+    
+    const boardArray = [];
+    const dimension = 3;
+    for (let i = 0; i < dimension; i++) {
+        const row = [];
+        for (let j = 0; j < dimension; j++) {
+            row.push("x");
         }
-        return rows;
-    })();
-
-    console.table(board);
-    console.log(board.length);
-    
-    return {board};
+        boardArray.push(row);
+    }
+    return boardArray;
 })();
 
-(function () {
-    const displayController = document.getElementsByTagName('main')[0];
-})();
 
-function Player() {
-    
-}
+const displayController = ((doc) => {
+    for (let i = 0; i < gameBoard.length; i++) {
+
+        const row = doc.createElement("div");
+        row.classList.add("row");
+
+        for (let j = 0; j < gameBoard[0].length; j++){
+            const box = doc.createElement("div");
+            box.textContent = gameBoard[i][j];
+            row.appendChild(box);
+        }
+
+        doc.getElementsByTagName('body')[0].appendChild(row);        
+    }
+
+
+})(document);
