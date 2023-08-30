@@ -13,20 +13,20 @@ const gameBoard = (() => {
 })();
 
 
-const displayController = ((doc) => {
+const displayController = ((gameboardContainer) => {
     for (let i = 0; i < gameBoard.length; i++) {
 
-        const row = doc.createElement("div");
+        const row = document.createElement("div");
         row.classList.add("row");
 
         for (let j = 0; j < gameBoard[0].length; j++){
-            const box = doc.createElement("div");
+            const box = document.createElement("div");
             box.textContent = gameBoard[i][j];
             row.appendChild(box);
         }
 
-        doc.getElementsByTagName('body')[0].appendChild(row);        
+        gameboardContainer.appendChild(row);        
     }
 
 
-})(document);
+})(document.getElementsByClassName("gameboardContainer")[0]);
