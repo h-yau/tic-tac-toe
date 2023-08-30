@@ -17,15 +17,12 @@ const displayController = ((gameboardContainer) => {
     for (let i = 0; i < gameBoard.length; i++) {
 
         const row = document.createElement("div");
-        row.classList.add("row");
 
         for (let j = 0; j < gameBoard[0].length; j++){
             const box = document.createElement("div");
             box.textContent = gameBoard[i][j];
-            row.appendChild(box);
-        }
-
-        gameboardContainer.appendChild(row);        
+            gameboardContainer.appendChild(box);
+        }     
     }
 
 
