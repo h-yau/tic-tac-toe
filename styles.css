@@ -18,11 +18,16 @@
 
 .gameboardContainer > div {
     background-color: white;
-    border: 1px solid gray;
+    border: 2px solid gray;
     height: 6rem;
     width: auto;
 }
 
 .gameboardContainer > div:hover {
     cursor: pointer;
+    background-color: gray;
+}
+
+.gameboardContainer > div:active {
+    background-color: black;
 }
