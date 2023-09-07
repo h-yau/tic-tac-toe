@@ -13,39 +13,69 @@ const gameBoard = (() => {
 })();
 
 
-const displayController = ((gameboardContainer) => {
+const displayController = (() => {
+
+    const gameboardContainer = document.getElementsByClassName("gameboardContainer")[0];
+
     for (let i = 0; i < gameBoard.length; i++) {
 
-        const row = document.createElement("div");
+        for (let j = 0; j < gameBoard[i].length; j++){
 
-        for (let j = 0; j < gameBoard[0].length; j++){
-            const box = document.createElement("div");
-            box.textContent = gameBoard[i][j];
-            box.classList.add("cell");
-            gameboardContainer.appendChild(box);
+            const cell = document.createElement("div");
+            cell.textContent = gameBoard[i][j];
+            cell.classList.add("cell");
+            gameboardContainer.appendChild(cell);
         }     
     }
-
-
-})(document.getElementsByClassName("gameboardContainer")[0]);
+})();
 
 
 function Player(input) {
+
     const move = () => input;
     const playerMove = () => {
+
         const cells = Array.from(document.getElementsByClassName("cell"));
         cells.forEach(cell => {
-            cell.addEventListener("click", () => cell.textContent = move());
+
+            cell.addEventListener("click", () => {
+
+                if (cell.textContent != "") {
+                    return;
+                }
+
+                cell.textContent = move();
+                togglePlayers();
+            });
         });
     }
     return {playerMove};
 }
 
-function togglePlayers() {
-    
+const preparePlayers = (() => {
 
+    const player1 = Player("o");
+    const player2 = Player("x");
+    const state = {
+        player1Playing: true,
+        player1,
+        player2,
+    }
+
+    return state;
+})();
+
+function togglePlayers () {
+
+    if(preparePlayers.state.player1Playing) {
+
+        preparePlayers.state.player1Playing = false;
+
+    } else {
+
+        preparePlayers.state.player1Playing = true;
+
+    }
 }
 
-const player1 = Player("x");
-const player2 = Player("o");
-player1.playerMove();
+// const gameState = preparePlayers();
