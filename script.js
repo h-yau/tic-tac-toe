@@ -26,6 +26,8 @@ const displayController = (() => {
 
     const gameboardContainer = document.getElementsByClassName("gameboardContainer")[0];
 
+    let movesLeft = 9;
+
     const player1 = createPlayer('o');
     player1.isPlaying = true;
     const player2 = createPlayer('x');
@@ -33,7 +35,21 @@ const displayController = (() => {
     const hasGameEnded = (i, j) => {
 
         let verticalCheck = true, horizontalCheck = true;
-        
+
+         // to check diagonal
+        if (gameBoard[1][1] != '' && (i + j == 0 || i + j == 4 || i + j == 2)) {
+
+            if (gameBoard[0][0] == gameBoard[1][1] &&
+                gameBoard[1][1] == gameBoard[2][2]) {
+                    return true;
+            }
+
+            if (gameBoard[0][2] == gameBoard[1][1] &&
+                gameBoard[1][1] == gameBoard[2][0]){
+                    return true;
+                }
+        }
+
         for (let x = 0, dimension = gameBoard.length; x < (dimension - 1) && (horizontalCheck == true || verticalCheck == true); x++) {
             
             if (gameBoard[i][x] == '') {
@@ -53,7 +69,6 @@ const displayController = (() => {
             if (verticalCheck == false && horizontalCheck == false) {
                 return false;
             }
-            ////////////////////// still need to check across
         }
         console.log('winner!');
         return true;
@@ -84,6 +99,14 @@ const displayController = (() => {
         });
     }
 
+    const announceWinner = () => {
+        if (player1.isPlaying) {
+            alert('Player 1 won!');
+        } else {
+            alert('Player 2 won!');
+        }
+    }
+
     const clickListener = (cell, i, j) => {
 
         cell.addEventListener('click', (e) => {
@@ -97,14 +120,19 @@ const displayController = (() => {
             if (!gameBoard[i][j]) {
 
                 gameBoard[i][j] = move;
+                movesLeft--;
             }
 
             if (hasGameEnded(i, j)) {
 
                 disableBoard();
-                ////////////////////////// need to announce winner
+                announceWinner();
+
             }
 
+            if (movesLeft <= 0) {
+                alert('Tie!');
+            }
             togglePlayers();
         });
     };
