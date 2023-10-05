@@ -5,5 +5,94 @@
 }
 
 :root {
+    --cell-dimension: 10rem;
+    --mark-dimension: calc((var(--cell-dimension)) * 0.9); 
+    --gap-dimension: 0.4rem;
+    text-align: center;
+}
 
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameboardContainer {
+    display: grid;
+    justify-content: center;
+    gap: var(--gap-dimension);
+    background-color: black;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: var(--gap-dimension);
+}
+
+.cell {
+    width: var(--cell-dimension);
+    height: var(--cell-dimension);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell.x::before,
+.cell.x::after,
+.gameboardContainer.x .cell:not(.x):not(.o):hover::before,
+.gameboardContainer.x .cell:not(.x):not(.o):hover::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--mark-dimension) * 0.1);
+    height: var(--mark-dimension);
+    background-color: black;
+}
+
+.cell.x::before,
+.gameboardContainer.x .cell:not(.x):not(.o):hover::before {
+    transform: rotate(45deg);
+}
+
+.cell.x::after,
+.gameboardContainer.x .cell:not(.x):not(.o):hover::after {
+    transform: rotate(-45deg);
+}
+
+
+.cell.o::before,
+.cell.o::after,
+.gameboardContainer.o .cell:not(.x):not(.o):hover::before,
+.gameboardContainer.o .cell:not(.x):not(.o):hover::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.cell.o::before,
+.gameboardContainer.o .cell:not(.x):not(.o):hover::before {
+    width: var(--mark-dimension);
+    height: var(--mark-dimension);
+    background-color: black;
+}
+
+.cell.o::after,
+.gameboardContainer.o .cell:not(.x):not(.o):hover::after {
+    width: calc(var(--mark-dimension) * 0.8);
+    height: calc(var(--mark-dimension) * 0.8);
+    background-color: white;
+}
+
+.gameboardContainer.x .cell:not(.x):not(.o):hover::before,
+.gameboardContainer.x .cell:not(.x):not(.o):hover::after,
+.gameboardContainer.o .cell:not(.x):not(.o):hover::before{
+    background-color: lightgray;
+
+}
+
+.cell.o,
+.cell.x {
+    cursor: not-allowed;
 }
