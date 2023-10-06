@@ -5,17 +5,28 @@ const gameBoard = (() => {
     // to create empty 2D array
     for (let i = 0; i < DIMENSION; i++) {
         board[i] = [, , , ];
-    }
-    console.table(board);
+    };
 
     const getBoard = () => board;
+    const updateBoard = (cell, move) => {
+        const [x, y] = cell;
+        board[x][y] = move;
+    };
 
-    return {getBoard};
+    const isWinner = () => {
+
+    };
+
+    const isTied = () => {
+
+    };
+
+    return {getBoard, updateBoard};
 })();
 
-const displayController = () => {
-
-}();
+const displayController = (() => {
+    console.table(gameBoard.getBoard());
+})();
 
 const player = () => {
     let mark = "x";
