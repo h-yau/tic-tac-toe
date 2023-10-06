@@ -13,4 +13,16 @@ const gameBoard = (() => {
     return {getBoard};
 })();
 
+const displayController = () => {
 
+}();
+
+const player = () => {
+    let mark = "x";
+    if(isPlayer1) {
+        mark = "o";
+    }
+    const playMove = () => {
+        e.target.classlist.add(mark);n
+    };
+};
