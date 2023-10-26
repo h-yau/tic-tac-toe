@@ -1,3 +1,16 @@
+const player = (isItPlayer1) => {
+    const isPlaying = false;
+    let mark = "x";
+    if(isItPlayer1 == true) {
+        mark = "o";
+    }
+    const playMove = () => {
+        // e.target.classlist.add(mark);
+        return mark;
+    }
+    return {playMove, isPlaying};
+};
+
 const gameBoard = (() => {
     const DIMENSION = 3;
     const board = [];
@@ -10,30 +23,36 @@ const gameBoard = (() => {
     const getBoard = () => board;
     const updateBoard = (cell, move) => {
         const [x, y] = cell;
-        board[x][y] = move;
-    };
+        if (board[x][y] == null || board[x][y] == undefined) {
+            board[x][y] = move;
+        }
+    } 
+
+    const player1 = player(true);
+    const player2 = player(false);  
 
     const isWinner = () => {
 
-    };
+    }
 
     const isTied = () => {
 
-    };
+    }
 
-    return {getBoard, updateBoard};
+    return {getBoard, updateBoard, player1};
 })();
 
 const displayController = (() => {
     console.table(gameBoard.getBoard());
 })();
 
-const player = () => {
-    let mark = "x";
-    if(isPlayer1) {
-        mark = "o";
+
+
+const togglePlayers = () => {
+    if (!player1.isPlaying && !player2.isPlaying) {
+        player1.isPlaying = true;
+    } else {
+        player1.isPlaying = !player1.isPlaying;
+        player2.isPlaying = !player2.isPlaying;
     }
-    const playMove = () => {
-        e.target.classlist.add(mark);n
-    };
 };
