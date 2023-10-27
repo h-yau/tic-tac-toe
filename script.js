@@ -31,6 +31,15 @@ const gameBoard = (() => {
     const player1 = player(true);
     const player2 = player(false);  
 
+    const togglePlayers = () => {
+        if (!player1.isPlaying && !player2.isPlaying) {
+            player1.isPlaying = true;
+        } else {
+            player1.isPlaying = !player1.isPlaying;
+            player2.isPlaying = !player2.isPlaying;
+        }
+    };
+
     const isWinner = () => {
 
     }
@@ -39,20 +48,9 @@ const gameBoard = (() => {
 
     }
 
-    return {getBoard, updateBoard, player1};
+    return {getBoard, updateBoard, player1, player2, togglePlayers};
 })();
 
 const displayController = (() => {
     console.table(gameBoard.getBoard());
 })();
-
-
-
-const togglePlayers = () => {
-    if (!player1.isPlaying && !player2.isPlaying) {
-        player1.isPlaying = true;
-    } else {
-        player1.isPlaying = !player1.isPlaying;
-        player2.isPlaying = !player2.isPlaying;
-    }
-};
