@@ -1,5 +1,4 @@
 const player = (isItPlayer1) => {
-    const isPlaying = false;
     let mark = "x";
     if(isItPlayer1 == true) {
         mark = "o";
@@ -8,7 +7,7 @@ const player = (isItPlayer1) => {
         // e.target.classlist.add(mark);
         return mark;
     }
-    return {playMove, isPlaying};
+    return {playMove};
 };
 
 const gameBoard = (() => {
@@ -31,13 +30,32 @@ const gameBoard = (() => {
     const player1 = player(true);
     const player2 = player(false);  
 
-    const togglePlayers = () => {
-        if (!player1.isPlaying && !player2.isPlaying) {
-            player1.isPlaying = true;
+    const activePlayer = player1;
+
+    const toggleActivePlayer = () => {
+        return activePlayer == player1 ? player2 : player1;
+    }
+
+    const isFirstRound = true;
+
+    const playRound = () => {
+
+        if (isFirstRound == false) {
+            activePlayer = toggleActivePlayer();
         } else {
-            player1.isPlaying = !player1.isPlaying;
-            player2.isPlaying = !player2.isPlaying;
+            isFirstRound = false;
         }
+
+        let cell;
+        if (player1.isPlaying) {
+            cell = prompt("Player 1's turn: ");
+        } else {
+            cell = prompt("Player 2's turn: ");
+        }
+        const [x, y] = cell.split(",");
+
+        console.log(x, y);
+        console.table(getBoard());
     };
 
     const isWinner = () => {
@@ -48,7 +66,11 @@ const gameBoard = (() => {
 
     }
 
-    return {getBoard, updateBoard, player1, player2, togglePlayers};
+    const startGame = () => {
+        playRound();
+     };
+
+    return {getBoard, updateBoard, player1, player2, startGame, playRound};
 })();
 
 const displayController = (() => {
