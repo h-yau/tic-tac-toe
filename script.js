@@ -20,8 +20,8 @@ const gameBoard = (() => {
     };
 
     const getBoard = () => board;
-    const updateBoard = (cell, move) => {
-        const [x, y] = cell;
+    const updateBoard = (coordinates, move) => {
+        const [x, y] = coordinates;
         if (board[x][y] == null || board[x][y] == undefined) {
             board[x][y] = move;
         }
@@ -46,13 +46,13 @@ const gameBoard = (() => {
             isFirstRound = false;
         }
 
-        let cell;
+        let coordinates;
         if (player1.isPlaying) {
-            cell = prompt("Player 1's turn: ");
+            coordinates = prompt("Player 1's turn: ");
         } else {
-            cell = prompt("Player 2's turn: ");
+            coordinates = prompt("Player 2's turn: ");
         }
-        const [x, y] = cell.split(",");
+        const [x, y] = coordinates.split(",");
 
         console.log(x, y);
         console.table(getBoard());
