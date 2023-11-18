@@ -16,13 +16,13 @@ const gameBoard = (() => {
 
     // to create empty 2D array
     for (let i = 0; i < DIMENSION; i++) {
-        board[i] = [, , , ];
+        board[i] = ["", "" , ""];
     };
 
     const getBoard = () => board;
     const updateBoard = (coordinates, move) => {
-        const [x, y] = coordinates;
-        if (board[x][y] == null || board[x][y] == undefined) {
+        const [x, y] = coordinates.split(",");
+        if (board[x][y] == false || board[x][y] == null || board[x][y] == undefined) {
             board[x][y] = move;
         }
     } 
@@ -30,13 +30,13 @@ const gameBoard = (() => {
     const player1 = player(true);
     const player2 = player(false);  
 
-    const activePlayer = player1;
+    let activePlayer = player1;
 
     const toggleActivePlayer = () => {
         return activePlayer == player1 ? player2 : player1;
     }
 
-    const isFirstRound = true;
+    let isFirstRound = true;
 
     const playRound = () => {
 
@@ -47,14 +47,16 @@ const gameBoard = (() => {
         }
 
         let coordinates;
-        if (player1.isPlaying) {
+        if (activePlayer == player1) {
             coordinates = prompt("Player 1's turn: ");
         } else {
             coordinates = prompt("Player 2's turn: ");
         }
         const [x, y] = coordinates.split(",");
 
+        // work on this NEXT!!!!!!!!!!!!!!!!
         console.log(x, y);
+        updateBoard(coordinates, activePlayer.playMove());
         console.table(getBoard());
     };
 
