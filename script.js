@@ -54,20 +54,64 @@ const gameBoard = (() => {
         } else {
             coordinates = prompt("Player 2's turn: ");
         }
-        const [x, y] = coordinates.split(",");
 
-        // work on this NEXT!!!!!!!!!!!!!!!!
-        console.log(x, y);
         let isUpdateSuccessful = updateBoard(coordinates, activePlayer.playMove());
+
+        // to check repeated move on a single cell
         if (!isUpdateSuccessful) {
             console.log("Update not successful!");
             activePlayer = toggleActivePlayer();
         }
+
+        // to console the table after every move, legal or not
         console.table(getBoard());
     };
 
-    const isWinner = () => {
+    const isThereAWinner = () => {
+        let moveToCheck = activePlayer.playMove();
 
+        const winningConditions = [
+            [
+                [moveToCheck, moveToCheck, moveToCheck],
+                ["", "", ""],
+                ["", "", ""]
+            ],
+            [
+                ["", "", ""],
+                [moveToCheck, moveToCheck, moveToCheck],
+                ["", "", ""]
+            ],
+            [
+                ["", "", ""],
+                ["", "", ""],
+                [moveToCheck, moveToCheck, moveToCheck],
+            ],
+            [
+                [moveToCheck, "", ""],
+                [moveToCheck, "", ""],
+                [moveToCheck, "", ""]
+            ],
+            [
+                ["", moveToCheck, ""],
+                ["", moveToCheck, ""],
+                ["", moveToCheck, ""]
+            ],
+            [
+                ["", "", moveToCheck],
+                ["", "", moveToCheck],
+                ["", "", moveToCheck]
+            ],
+            [
+                ["", "", moveToCheck],
+                ["", moveToCheck, ""],
+                [moveToCheck, "", ""]
+            ],
+            [
+                [moveToCheck, "", ""],
+                ["", moveToCheck, ""],
+                ["", "", moveToCheck]
+            ]
+        ]
     }
 
     const isTied = () => {
