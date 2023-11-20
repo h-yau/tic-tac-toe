@@ -21,10 +21,12 @@ const gameBoard = (() => {
 
     const getBoard = () => board;
     const updateBoard = (coordinates, move) => {
-        const [x, y] = coordinates.split(",");
+        const [x, y] = coordinates.replace(/\s+/g, "").split(",");
         if (board[x][y] == false || board[x][y] == null || board[x][y] == undefined) {
             board[x][y] = move;
+            return true;
         }
+        return false;
     } 
 
     const player1 = player(true);
@@ -56,7 +58,11 @@ const gameBoard = (() => {
 
         // work on this NEXT!!!!!!!!!!!!!!!!
         console.log(x, y);
-        updateBoard(coordinates, activePlayer.playMove());
+        let isUpdateSuccessful = updateBoard(coordinates, activePlayer.playMove());
+        if (!isUpdateSuccessful) {
+            console.log("Update not successful!");
+            activePlayer = toggleActivePlayer();
+        }
         console.table(getBoard());
     };
 
