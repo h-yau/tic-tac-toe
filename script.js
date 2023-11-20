@@ -1,13 +1,15 @@
 const player = (isItPlayer1) => {
     let mark = "x";
+    let name = "Player 2";
     if(isItPlayer1 == true) {
         mark = "o";
+        name = "Player 1";
     }
     const playMove = () => {
         // e.target.classlist.add(mark);
         return mark;
     }
-    return {playMove};
+    return {playMove, name};
 };
 
 const gameBoard = (() => {
@@ -65,6 +67,9 @@ const gameBoard = (() => {
 
         // to console the table after every move, legal or not
         console.table(getBoard());
+        if (isThereAWinner()) {
+            console.log(`${activePlayer.name} wins!`);
+        }
     };
 
     const isThereAWinner = () => {
@@ -74,9 +79,16 @@ const gameBoard = (() => {
             [board[0][0], board[0][1], board[0][2]],
             [board[1][0], board[1][1], board[1][2]],
             [board[2][0], board[2][1], board[2][2]],
-            
-        ]
-        ;
+            [board[0][0], board[1][0], board[2][0]],
+            [board[1][0], board[1][1], board[1][2]],
+            [board[2][0], board[2][1], board[2][2]],
+            [board[0][0], board[1][1], board[2][2]],
+            [board[0][2], board[1][1], board[2][0]]
+        ];
+
+        return winningConditions.some(condition => {
+            return condition.every(cell => cell == moveToCheck);
+        });
     }
 
     const isTied = () => {
