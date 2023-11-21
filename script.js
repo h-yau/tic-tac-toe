@@ -23,7 +23,7 @@ const gameBoard = (() => {
 
     const getBoard = () => board;
     const updateBoard = (coordinates, move) => {
-        const [x, y] = coordinates.replace(/\s+/g, "").split(",");
+        const [x, y] = coordinates;
         if (board[x][y] == false || board[x][y] == null || board[x][y] == undefined) {
             board[x][y] = move;
             return true;
@@ -156,6 +156,7 @@ const displayController = (() => {
         e.preventDefault()
         e.target.classList.add(currentMove);
         console.log(Math.floor(index / 3), index % 3);
+        gameBoard.updateBoard([Math.floor(index / 3), index % 3], currentMove);
     }
 
     // add listeners to the cells
