@@ -32,7 +32,8 @@ const gameBoard = (() => {
     } 
 
     const player1 = player(true);
-    const player2 = player(false);  
+    const player2 = player(false);
+    let hasGameEnded = false;  
 
     let activePlayer = player1;
 
@@ -69,6 +70,21 @@ const gameBoard = (() => {
         console.table(getBoard());
         if (isThereAWinner()) {
             console.log(`${activePlayer.name} wins!`);
+            hasGameEnded = true;
+        }
+
+        // after checking winner, check if it's tied
+        else if (isTied()) {
+            console.log("It's a tie!");
+            hasGameEnded = true;
+        }
+
+        // prompt to restart
+        if (hasGameEnded) {
+            let isToRestart = prompt("Do you want to restart game? Answer yes or no.");
+            if (isToRestart == "yes") {
+                restartGame();
+            }
         }
     };
 
@@ -92,14 +108,31 @@ const gameBoard = (() => {
     }
 
     const isTied = () => {
+        return board.every(row => {
+            return row.every(cell => cell == 'o' || cell == "x");
+        });
+    }
 
+    const restartGame = () => {
+        
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                board[i][j] = "";
+            }
+        }
+
+
+        activePlayer = player1;
+        isFirstRound = true;
+        console.table(gameBoard.getBoard());
+        startGame();
     }
 
     const startGame = () => {
         playRound();
      };
 
-    return {getBoard, updateBoard, player1, player2, startGame, playRound};
+    return {getBoard, updateBoard, player1, player2, startGame, playRound, restartGame};
 })();
 
 const displayController = (() => {
