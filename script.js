@@ -129,15 +129,43 @@ const gameBoard = (() => {
         startGame();
     }
 
+
     const startGame = () => {
         while(!hasGameEnded) {
             playRound();
         }
      };
 
-    return {getBoard, updateBoard, startGame, restartGame};
+     // will turn on once it's the displaycontroller is completed
+    //  startGame();
+    return {getBoard, updateBoard, startGame, restartGame, activePlayer};
 })();
 
 const displayController = (() => {
-    console.table(gameBoard.getBoard());
+
+    let currentMove = gameBoard.activePlayer.playMove();
+
+    const gameboardContainer = document.getElementsByClassName("gameboardContainer")[0];
+
+    if (gameboardContainer != null || gameboardContainer != undefined) {
+        gameboardContainer.classList.add(currentMove);
+    }
+
+    const addMove = (e, index) => {
+  
+        e.preventDefault()
+        e.target.classList.add(currentMove);
+        console.log(Math.floor(index / 3), index % 3);
+    }
+
+    // add listeners to the cells
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', (e) => {
+            addMove(e, index);
+        });
+    });
+
+
+
 })();
