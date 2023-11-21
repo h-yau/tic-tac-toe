@@ -31,6 +31,7 @@ const gameBoard = (() => {
         return false;
     } 
 
+    // to set up players
     const player1 = player(true);
     const player2 = player(false);
     let hasGameEnded = false;  
@@ -129,10 +130,12 @@ const gameBoard = (() => {
     }
 
     const startGame = () => {
-        playRound();
+        while(!hasGameEnded) {
+            playRound();
+        }
      };
 
-    return {getBoard, updateBoard, player1, player2, startGame, playRound, restartGame};
+    return {getBoard, updateBoard, startGame, restartGame};
 })();
 
 const displayController = (() => {
