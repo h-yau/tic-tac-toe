@@ -36,7 +36,7 @@ const gameBoard = (() => {
     const player2 = player(false);
     let hasGameEnded = false;  
 
-    let activePlayer = player1;
+    let activePlayer = player2;
 
     const toggleActivePlayer = () => {
         return activePlayer == player1 ? player2 : player1;
@@ -44,27 +44,21 @@ const gameBoard = (() => {
 
     let isFirstRound = true;
 
-    const playRound = () => {
+    const playRound = (coordinates, currentMove) => {
 
-        if (isFirstRound == false) {
-            activePlayer = toggleActivePlayer();
-        } else {
-            isFirstRound = false;
-        }
-
-        let coordinates;
-        if (activePlayer == player1) {
-            coordinates = prompt("Player 1's turn: ");
-        } else {
-            coordinates = prompt("Player 2's turn: ");
-        }
+        // let coordinates;
+        // if (activePlayer == player1) {
+        //     coordinates = prompt("Player 1's turn: ");
+        // } else {
+        //     coordinates = prompt("Player 2's turn: ");
+        // }
 
         let isUpdateSuccessful = updateBoard(coordinates, activePlayer.playMove());
 
         // to check repeated move on a single cell
         if (!isUpdateSuccessful) {
             console.log("Update not successful!");
-            activePlayer = toggleActivePlayer();
+            return;
         }
 
         // to console the table after every move, legal or not
@@ -87,6 +81,12 @@ const gameBoard = (() => {
                 restartGame();
             }
         }
+
+        if (isFirstRound) {
+            isFirstRound = false;            
+        }
+        activePlayer = toggleActivePlayer();
+        console.log(activePlayer);
     };
 
     const isThereAWinner = () => {
@@ -138,7 +138,7 @@ const gameBoard = (() => {
 
      // will turn on once it's the displaycontroller is completed
     //  startGame();
-    return {getBoard, updateBoard, startGame, restartGame, activePlayer};
+    return {getBoard, updateBoard, startGame, playRound, restartGame, activePlayer};
 })();
 
 const displayController = (() => {
@@ -151,19 +151,36 @@ const displayController = (() => {
         gameboardContainer.classList.add(currentMove);
     }
 
+    const toggleDisplayGameBoard = () => {
+        if (gameboardContainer == null || gameboardContainer == undefined) {
+            return;
+        }
+        // somewhere around here? gameboardcontainer not changing
+        // somehow the two modules are not agreeing which is the activePlayer. DisplayController only prints out the default one (player1), while the one on top actually changes
+        gameboardContainer.classList.remove(currentMove);
+        console.log(currentMove);
+        currentMove = gameBoard.activePlayer.playMove();
+        console.log(currentMove);
+        gameboardContainer.classList.add(currentMove);
+
+    };
+
     const addMove = (e, index) => {
   
         e.preventDefault()
         e.target.classList.add(currentMove);
         console.log(Math.floor(index / 3), index % 3);
-        gameBoard.updateBoard([Math.floor(index / 3), index % 3], currentMove);
-    }
+        gameBoard.playRound([Math.floor(index / 3), index % 3], currentMove);
+    };
 
     // add listeners to the cells
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell, index) => {
         cell.addEventListener('click', (e) => {
             addMove(e, index);
+            console.log(gameBoard.activePlayer);
+            toggleDisplayGameBoard();
+
         });
     });
 
