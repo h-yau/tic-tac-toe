@@ -44,7 +44,17 @@ const gameController = (() => {
         isPlayer1sTurn = !isPlayer1sTurn;
     }
 
-    const playRound = (coordinates, currentPlayer) => {
+    const retrieveCurrentPlayer = () => {
+        if (isPlayer1sTurn) {
+            return player1;
+        } else {
+            return player2;
+        }
+    }
+
+    const playRound = (coordinates) => {
+        const currentPlayer = retrieveCurrentPlayer();
+
         let isAddMoveSuccessful = addMove(coordinates, currentPlayer);
 
         if (isAddMoveSuccessful) {
