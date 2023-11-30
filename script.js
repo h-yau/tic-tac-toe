@@ -45,7 +45,6 @@ const gameBoard = (() => {
     let isFirstRound = true;
 
     const playRound = (coordinates, currentMove) => {
-
         // let coordinates;
         // if (activePlayer == player1) {
         //     coordinates = prompt("Player 1's turn: ");
