@@ -28,6 +28,7 @@ const gameController = (() => {
         }
     }
 
+    // will return if the move is legal and added successfully
     const addMove = (coordinates, currentPlayer) => {
         const [row, col] = coordinates;
         
@@ -39,11 +40,17 @@ const gameController = (() => {
         return true;
     };
 
-    const togglePlayers = (isAddMoveSuccessful) {
-        if(isAddMoveSuccessful) {
-            isPlayer1sTurn = !isPlayer1sTurn;
+    const togglePlayers = () => {
+        isPlayer1sTurn = !isPlayer1sTurn;
+    }
+
+    const playRound = (coordinates, currentPlayer) => {
+        let isAddMoveSuccessful = addMove(coordinates, currentPlayer);
+
+        if (isAddMoveSuccessful) {
+            togglePlayers();
         }
     }
 
-    return {player1, player2, gameArray, addMove, clearGameArray};
+    return {player1, player2, gameArray, addMove, clearGameArray, togglePlayers, playRound};
 })();
