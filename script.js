@@ -36,15 +36,18 @@ const gameBoard = (() => {
     const player2 = player(false);
     let hasGameEnded = false;  
 
-    let activePlayer = player2;
+    let activePlayer = player1;
 
     const toggleActivePlayer = () => {
-        return activePlayer == player1 ? player2 : player1;
+        console.log(`Before toggle: ${activePlayer.name}`);
+        activePlayer = activePlayer == player1 ? player2 : player1;
+        console.log(`After toggle: ${activePlayer.name}`)
+        return activePlayer;
     }
 
     let isFirstRound = true;
 
-    const playRound = (coordinates, currentMove) => {
+    const playRound = (coordinates) => {
 
         // let coordinates;
         // if (activePlayer == player1) {
@@ -60,6 +63,7 @@ const gameBoard = (() => {
             console.log("Update not successful!");
             return;
         }
+
 
         // to console the table after every move, legal or not
         console.table(getBoard());
@@ -86,10 +90,11 @@ const gameBoard = (() => {
             isFirstRound = false;            
         }
         activePlayer = toggleActivePlayer();
-        console.log(activePlayer);
+        console.log(`Toggled result in playRound: ${activePlayer.name}`);
     };
 
     const isThereAWinner = () => {
+
         let moveToCheck = activePlayer.playMove();
 
         const winningConditions = [
@@ -138,12 +143,12 @@ const gameBoard = (() => {
 
      // will turn on once it's the displaycontroller is completed
     //  startGame();
-    return {getBoard, updateBoard, startGame, playRound, restartGame, activePlayer};
+    return {getBoard, updateBoard, startGame, playRound, restartGame, activePlayer, toggleActivePlayer};
 })();
 
-const displayController = (() => {
+const displayController = ((board) => {
 
-    let currentMove = gameBoard.activePlayer.playMove();
+    let currentMove = board.activePlayer.playMove();
 
     const gameboardContainer = document.getElementsByClassName("gameboardContainer")[0];
 
@@ -159,7 +164,7 @@ const displayController = (() => {
         // somehow the two modules are not agreeing which is the activePlayer. DisplayController only prints out the default one (player1), while the one on top actually changes
         gameboardContainer.classList.remove(currentMove);
         console.log(currentMove);
-        currentMove = gameBoard.activePlayer.playMove();
+        currentMove = board.activePlayer.playMove();
         console.log(currentMove);
         gameboardContainer.classList.add(currentMove);
 
@@ -170,7 +175,7 @@ const displayController = (() => {
         e.preventDefault()
         e.target.classList.add(currentMove);
         console.log(Math.floor(index / 3), index % 3);
-        gameBoard.playRound([Math.floor(index / 3), index % 3], currentMove);
+        board.playRound([Math.floor(index / 3), index % 3]);
     };
 
     // add listeners to the cells
@@ -178,12 +183,14 @@ const displayController = (() => {
     cells.forEach((cell, index) => {
         cell.addEventListener('click', (e) => {
             addMove(e, index);
-            console.log(gameBoard.activePlayer);
+            console.log(board.activePlayer);
             toggleDisplayGameBoard();
 
         });
     });
 
 
+    return {currentMove, toggleDisplayGameBoard};
+})(gameBoard);
 
-})();
+const tester = gameBoard;
