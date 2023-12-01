@@ -113,7 +113,7 @@ const gameController = (() => {
             }
             togglePlayers();   
         }
-
+        return isRoundSuccessful;
 
     }
 
@@ -126,7 +126,6 @@ const gameController = (() => {
         clearGameArray();
         hasGameEnded = () => false;
         isPlayer1sTurn = true;
-        playGame();
     }
 
     return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, retrieveCurrentPlayer, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
@@ -152,8 +151,12 @@ const displayController = ((doc) => {
         htmlCell.classList.add(gameController.retrieveCurrentPlayer().playMove());
     };
 
+    const clearGameboardContainerClass = () => {
+        gameboardContainer.className = 'gameboardContainer';
+    }
+
     const resetDisplay = () => {
-        gameboardContainer.classList.remove(gameController.player2.playMove());
+        clearGameboardContainerClass();
         clearDisplayCells();
         gameboardContainer.classList.add(gameController.player1.playMove());
     };
