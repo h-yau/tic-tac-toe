@@ -167,6 +167,12 @@ const displayController = ((doc) => {
         });
     };
 
-    return {resetDisplay, clearDisplayCells};
+    const disableDisplay = () => {
+        gameboardContainer.classList.add('disabled');
+    }
+
+    // needs to add reset button, which triggers the reset display and restart function in gameController module
+
+    return {resetDisplay, clearDisplayCells, disableDisplay};
 
 })(document); 

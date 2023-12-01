@@ -96,3 +96,7 @@ main {
 .cell.x {
     cursor: not-allowed;
 }
+
+.disabled {
+    pointer-events: none;
+}
