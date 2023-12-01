@@ -115,6 +115,7 @@ const gameController = (() => {
         clearGameArray();
         hasGameEnded = false;
         isPlayer1sTurn = true;
+        playGame();
     }
 
     return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
