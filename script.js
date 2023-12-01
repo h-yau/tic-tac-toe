@@ -92,13 +92,15 @@ const gameController = (() => {
             let location = prompt("Insert your input here").split(",").map(coordinate => Number(coordinate));
             let isRoundSuccessful = playRoundSuccessfully(location);
             if (isRoundSuccessful) {
+                console.table(gameArray);
                 if (isThereWinner()) {
                     endGame();
+                    return;
                 } else if (isItTied()) {
                     endGame();
-                } else {
-                    togglePlayers();
+                    return;
                 }
+                togglePlayers();   
             }
         }
 
