@@ -1,10 +1,8 @@
 const player = (sign) => {
 
-
     const playMove = () => {
         return sign;
     };
-    
     return {playMove};
 };
 
@@ -83,7 +81,18 @@ const gameController = (() => {
         return gameArray.every(row => {
             return row.every(cell => cell == player1.playMove() || cell == player2.playMove());
         });
+    }
 
+    const announceWinner = () => {
+        if (isPlayer1sTurn) {
+            console.log("Player 1 won!");
+        } else {
+            console.log("Player 2 won!");
+        }
+    }
+
+    const announceTie = () => {
+        console.log("It's a tie!");
     }
 
     const playGame = () => {
@@ -94,9 +103,11 @@ const gameController = (() => {
             if (isRoundSuccessful) {
                 console.table(gameArray);
                 if (isThereWinner()) {
+                    announceWinner();
                     endGame();
                     return;
                 } else if (isItTied()) {
+                    announceTie();
                     endGame();
                     return;
                 }
@@ -120,3 +131,5 @@ const gameController = (() => {
 
     return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
 })();
+
+
