@@ -130,7 +130,7 @@ const gameController = (() => {
         isPlayer1sTurn = true;
     }
 
-    return {player1, player2, gameArray, hasGameEnded, addValidMove, clearGameArray, togglePlayers, retrieveCurrentPlayer, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
+    return {player1, player2, gameArray, togglePlayers, retrieveCurrentPlayer, playGame, restartGame};
 })();
 
 const displayController = ((doc) => {
@@ -193,7 +193,4 @@ const displayController = ((doc) => {
     const disableDisplay = () => {
         gameboardContainer.classList.add('disabled');
     }
-
-    return {resetDisplay, clearDisplayCells, disableDisplay};
-
 })(document); 
