@@ -8,7 +8,9 @@ const player = (sign) => {
 
 const gameController = (() => {
     const player1 = player("o");
+    player1.name = "Player 1";
     const player2 = player("x");
+    player2.name = "Player 2";
     let isPlayer1sTurn = true;
 
     let hasGameEnded = () => false;
@@ -134,6 +136,13 @@ const gameController = (() => {
 const displayController = ((doc) => {
     
     const gameboardContainer = doc.querySelector('.gameboardContainer');
+    const restartButton = doc.querySelector('.restart');
+
+    restartButton.addEventListener('click', () => {
+        resetDisplay();
+        gameController.restartGame();
+    });
+
     gameboardContainer.classList.add(gameController.retrieveCurrentPlayer().playMove());
 
     const cells = doc.querySelectorAll('.cell');
@@ -144,12 +153,14 @@ const displayController = ((doc) => {
             let [curPlayer, isItOver] = gameController.playGame(clickedCoordinates);
             if (curPlayer != null) {
                 addSignToDisplay(cell, curPlayer);
-                gameController.togglePlayers();
-                changeGameboardContainerClass();
 
                 if (isItOver) {
                     disableDisplay();
+                    alert(`${curPlayer.name} won!`);
+                    return;
                 }
+                gameController.togglePlayers();
+                changeGameboardContainerClass();
             };        
         });
     });
@@ -182,8 +193,6 @@ const displayController = ((doc) => {
     const disableDisplay = () => {
         gameboardContainer.classList.add('disabled');
     }
-
-    // needs to add reset button, which triggers the reset display and restart function in gameController module
 
     return {resetDisplay, clearDisplayCells, disableDisplay};
 
