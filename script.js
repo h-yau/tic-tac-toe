@@ -65,8 +65,8 @@ const gameController = (() => {
             [gameArray[1][0], gameArray[1][1], gameArray[1][2]],
             [gameArray[2][0], gameArray[2][1], gameArray[2][2]],
             [gameArray[0][0], gameArray[1][0], gameArray[2][0]],
-            [gameArray[1][0], gameArray[1][1], gameArray[1][2]],
-            [gameArray[2][0], gameArray[2][1], gameArray[2][2]],
+            [gameArray[0][1], gameArray[1][1], gameArray[2][1]],
+            [gameArray[0][2], gameArray[1][2], gameArray[2][2]],
             [gameArray[0][0], gameArray[1][1], gameArray[2][2]],
             [gameArray[0][2], gameArray[1][1], gameArray[2][0]] 
         ];
@@ -137,5 +137,37 @@ const displayController = ((doc) => {
     const gameboardContainer = doc.querySelector('.gameboardContainer');
     gameboardContainer.classList.add(gameController.retrieveCurrentPlayer().playMove());
 
+    const cells = doc.querySelectorAll('.cell');
+    cells.forEach((cell, index) => {
+        cell.addEventListener('click', () => {
+            let clickedCoordinates = [Math.floor(index / 3), index % 3];
+            console.log(clickedCoordinates);
+            if (gameController.playRoundSuccessfully(clickedCoordinates)) {
+                addSignToDisplay(cell);
+            };        
+        });
+    });
+
+    const addSignToDisplay = (htmlCell) => {
+        htmlCell.classList.add(gameController.retrieveCurrentPlayer().playMove());
+    };
+
+    const resetDisplay = () => {
+        gameboardContainer.classList.remove(gameController.player2.playMove());
+        clearDisplayCells();
+        gameboardContainer.classList.add(gameController.player1.playMove());
+    };
+
+    const clearDisplayCells = () => {
+        cells.forEach(cell => {
+            cell.className = 'cell';
+        });
+    };
+
+    // gameController.playGame();
+
+    console.log("Display controller loaded");
+
+    return {resetDisplay, clearDisplayCells};
 
 })(document); 
