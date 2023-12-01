@@ -11,7 +11,7 @@ const gameController = (() => {
     const player2 = player("x");
     let isPlayer1sTurn = true;
 
-    let hasGameEnded = false;
+    let hasGameEnded = () => false;
 
     const gameArray = [];
     const DIMENSION = 3;
@@ -97,7 +97,7 @@ const gameController = (() => {
 
     const playGame = () => {
 
-        while (!hasGameEnded) {
+        while (!hasGameEnded()) {
             let location = prompt("Insert your input here").split(",").map(coordinate => Number(coordinate));
             let isRoundSuccessful = playRoundSuccessfully(location);
             if (isRoundSuccessful) {
@@ -118,18 +118,24 @@ const gameController = (() => {
     }
 
     const endGame = () => {
-        hasGameEnded = true;
+        hasGameEnded = () => true;
         console.log("Game ended!");
     }
 
     const restartGame = () => {
         clearGameArray();
-        hasGameEnded = false;
+        hasGameEnded = () => false;
         isPlayer1sTurn = true;
         playGame();
     }
 
-    return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
+    return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, retrieveCurrentPlayer, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
 })();
 
+const displayController = ((doc) => {
+    
+    const gameboardContainer = doc.querySelector('.gameboardContainer');
+    gameboardContainer.classList.add(gameController.retrieveCurrentPlayer().playMove());
 
+
+})(document); 
