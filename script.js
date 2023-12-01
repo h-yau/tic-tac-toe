@@ -95,25 +95,25 @@ const gameController = (() => {
         console.log("It's a tie!");
     }
 
-    const playGame = () => {
+    const playGame = (location) => {
 
-        while (!hasGameEnded()) {
-            let location = prompt("Insert your input here").split(",").map(coordinate => Number(coordinate));
-            let isRoundSuccessful = playRoundSuccessfully(location);
-            if (isRoundSuccessful) {
-                console.table(gameArray);
-                if (isThereWinner()) {
-                    announceWinner();
-                    endGame();
-                    return;
-                } else if (isItTied()) {
-                    announceTie();
-                    endGame();
-                    return;
-                }
-                togglePlayers();   
+        // The commented out code is for console play only
+        //let location = prompt("Insert your input here").split(",").map(coordinate => Number(coordinate));
+        let isRoundSuccessful = playRoundSuccessfully(location);
+        if (isRoundSuccessful) {
+            console.table(gameArray);
+            if (isThereWinner()) {
+                announceWinner();
+                endGame();
+                return;
+            } else if (isItTied()) {
+                announceTie();
+                endGame();
+                return;
             }
+            togglePlayers();   
         }
+
 
     }
 
@@ -142,7 +142,7 @@ const displayController = ((doc) => {
         cell.addEventListener('click', () => {
             let clickedCoordinates = [Math.floor(index / 3), index % 3];
             console.log(clickedCoordinates);
-            if (gameController.playRoundSuccessfully(clickedCoordinates)) {
+            if (gameController.playGame(clickedCoordinates)) {
                 addSignToDisplay(cell);
             };        
         });
@@ -163,10 +163,6 @@ const displayController = ((doc) => {
             cell.className = 'cell';
         });
     };
-
-    // gameController.playGame();
-
-    console.log("Display controller loaded");
 
     return {resetDisplay, clearDisplayCells};
 
