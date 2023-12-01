@@ -105,15 +105,15 @@ const gameController = (() => {
             if (isThereWinner()) {
                 announceWinner();
                 endGame();
-                return;
+
             } else if (isItTied()) {
                 announceTie();
                 endGame();
-                return;
             }
-            togglePlayers();   
+            return [retrieveCurrentPlayer(), hasGameEnded()];
+            // togglePlayers();   
         }
-        return isRoundSuccessful;
+        return null;
 
     }
 
@@ -128,7 +128,7 @@ const gameController = (() => {
         isPlayer1sTurn = true;
     }
 
-    return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, retrieveCurrentPlayer, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
+    return {player1, player2, gameArray, hasGameEnded, addValidMove, clearGameArray, togglePlayers, retrieveCurrentPlayer, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
 })();
 
 const displayController = ((doc) => {
@@ -141,14 +141,26 @@ const displayController = ((doc) => {
         cell.addEventListener('click', () => {
             let clickedCoordinates = [Math.floor(index / 3), index % 3];
             console.log(clickedCoordinates);
-            if (gameController.playGame(clickedCoordinates)) {
-                addSignToDisplay(cell);
+            let [curPlayer, isItOver] = gameController.playGame(clickedCoordinates);
+            if (curPlayer != null) {
+                addSignToDisplay(cell, curPlayer);
+                gameController.togglePlayers();
+                changeGameboardContainerClass();
+
+                if (isItOver) {
+                    disableDisplay();
+                }
             };        
         });
     });
 
-    const addSignToDisplay = (htmlCell) => {
-        htmlCell.classList.add(gameController.retrieveCurrentPlayer().playMove());
+    const changeGameboardContainerClass = () => {
+        clearGameboardContainerClass();
+        gameboardContainer.classList.add(gameController.retrieveCurrentPlayer().playMove());
+    };
+
+    const addSignToDisplay = (htmlCell, player) => {
+        htmlCell.classList.add(player.playMove());
     };
 
     const clearGameboardContainerClass = () => {
