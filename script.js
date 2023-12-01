@@ -13,6 +13,8 @@ const gameController = (() => {
     const player2 = player("x");
     let isPlayer1sTurn = true;
 
+    let hasGameEnded = false;
+
     const gameArray = [];
     const DIMENSION = 3;
 
@@ -29,7 +31,7 @@ const gameController = (() => {
     }
 
     // will return if the move is legal and added successfully
-    const addMove = (coordinates, currentPlayer) => {
+    const addValidMove = (coordinates, currentPlayer) => {
         const [row, col] = coordinates;
         
         // if cell is already occupied 
@@ -52,15 +54,66 @@ const gameController = (() => {
         }
     }
 
-    const playRound = (coordinates) => {
+    const playRoundSuccessfully = (coordinates) => {
+        const currentPlayer = retrieveCurrentPlayer();
+        return addValidMove(coordinates, currentPlayer);
+   };
+
+    const isThereWinner = () => {
         const currentPlayer = retrieveCurrentPlayer();
 
-        let isAddMoveSuccessful = addMove(coordinates, currentPlayer);
+        const winningConditions = [
+            [gameArray[0][0], gameArray[0][1], gameArray[0][2]],
+            [gameArray[1][0], gameArray[1][1], gameArray[1][2]],
+            [gameArray[2][0], gameArray[2][1], gameArray[2][2]],
+            [gameArray[0][0], gameArray[1][0], gameArray[2][0]],
+            [gameArray[1][0], gameArray[1][1], gameArray[1][2]],
+            [gameArray[2][0], gameArray[2][1], gameArray[2][2]],
+            [gameArray[0][0], gameArray[1][1], gameArray[2][2]],
+            [gameArray[0][2], gameArray[1][1], gameArray[2][0]] 
+        ];
 
-        if (isAddMoveSuccessful) {
-            togglePlayers();
-        }
+        return winningConditions.some(condition => {
+            return condition.every(cell => cell == currentPlayer.playMove());
+        });
+    };
+
+    const isItTied = () => {
+
+        return gameArray.every(row => {
+            return row.every(cell => cell == player1.playMove() || cell == player2.playMove());
+        });
+
     }
 
-    return {player1, player2, gameArray, addMove, clearGameArray, togglePlayers, playRound};
+    const playGame = () => {
+
+        while (!hasGameEnded) {
+            let location = prompt("Insert your input here").split(",").map(coordinate => Number(coordinate));
+            let isRoundSuccessful = playRoundSuccessfully(location);
+            if (isRoundSuccessful) {
+                if (isThereWinner()) {
+                    endGame();
+                } else if (isItTied()) {
+                    endGame();
+                } else {
+                    togglePlayers();
+                }
+            }
+        }
+
+    }
+
+    const endGame = () => {
+        hasGameEnded = true;
+        console.log("Game ended!");
+    }
+
+    const restartGame = () => {
+        clearGameArray();
+        hasGameEnded = false;
+        isPlayer1sTurn = true;
+    }
+
+    return {player1, player2, gameArray, addValidMove, clearGameArray, togglePlayers, playRoundSuccessfully, isThereWinner, isItTied, playGame, endGame, restartGame};
 })();
