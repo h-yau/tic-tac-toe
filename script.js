@@ -111,6 +111,7 @@ const gameController = (() => {
             } else if (isItTied()) {
                 announceTie();
                 endGame();
+                return [retrieveCurrentPlayer(), null];
             }
             return [retrieveCurrentPlayer(), hasGameEnded()];
             // togglePlayers();   
@@ -151,6 +152,7 @@ const displayController = ((doc) => {
             let clickedCoordinates = [Math.floor(index / 3), index % 3];
             console.log(clickedCoordinates);
             let [curPlayer, isItOver] = gameController.playGame(clickedCoordinates);
+
             if (curPlayer != null) {
                 addSignToDisplay(cell, curPlayer);
 
@@ -159,6 +161,13 @@ const displayController = ((doc) => {
                     alert(`${curPlayer.name} won!`);
                     return;
                 }
+
+                if (isItOver == null) {
+                    disableDisplay();
+                    alert("It's a tie!");
+                    return;
+                }
+
                 gameController.togglePlayers();
                 changeGameboardContainerClass();
             };        
